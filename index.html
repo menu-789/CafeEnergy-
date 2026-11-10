@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ENERGY+ CAFE</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Vazirmatn,sans-serif;
+ color:#effffb;
+ background:
+ radial-gradient(circle at 10% 10%,#126c66,transparent 35%),
+ linear-gradient(145deg,#021e20,#07534e,#022d2d);
+ min-height:100vh;
+ padding-bottom:110px;
+}
+header{
+ text-align:center;
+ padding:28px 15px 20px;
+}
+.logo{
+ font-size:39px;
+ font-weight:900;
+ letter-spacing:-2px;
+}
+.logo span{color:#28ddc9}
+.sub{
+ letter-spacing:7px;
+ font-weight:800;
+ font-size:14px;
+}
+.tagline{
+ color:#8ee9dc;
+ font-size:12px;
+ margin-top:12px;
+}
+.welcome{
+ margin:10px 16px 20px;
+ padding:22px;
+ border:1px solid #80d9ca55;
+ border-radius:25px;
+ background:#ffffff12;
+ backdrop-filter:blur(18px);
+ box-shadow:0 10px 35px #0004;
+}
+.welcome h2{margin:0 0 8px;font-size:23px}
+.welcome p{color:#b8ddd6;font-size:13px;margin:0}
+.categories{
+ display:flex;
+ overflow-x:auto;
+ gap:9px;
+ padding:8px 15px 20px;
+ scrollbar-width:none;
+}
+.cat{
+ flex-shrink:0;
+ border:1px solid #7fe9d255;
+ color:white;
+ background:#ffffff12;
+ padding:10px 17px;
+ border-radius:30px;
+ font-family:inherit;
+ cursor:pointer;
+}
+.cat.active{
+ background:#24cdbb;
+ color:#003a36;
+ font-weight:800;
+}
+h3.title{
+ margin:12px 17px;
+ font-size:20px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
+ padding:0 13px;
+}
+.card{
+ overflow:hidden;
+ border:1px solid #a1f8e344;
+ border-radius:21px;
+ background:linear-gradient(140deg,#ffffff20,#ffffff08);
+ backdrop-filter:blur(15px);
+ box-shadow:0 9px 25px #001b1a66;
+}
+.card img{
+ width:100%;
+ height:135px;
+ object-fit:cover;
+ display:block;
+}
+.info{padding:11px}
+.name{font-size:14px;font-weight:800}
+.desc{font-size:10px;color:#b9dcd5;margin:5px 0}
+.price{
+ color:#8df3e4;
+ font-weight:900;
+ font-size:14px;
+ margin:8px 0;
+}
+.add{
+ width:100%;
+ border:1px solid #64ead8;
+ border-radius:12px;
+ padding:10px 5px;
+ color:#eafffb;
+ background:linear-gradient(110deg,#159b90,#08716b);
+ font-family:inherit;
+ font-weight:800;
+ cursor:pointer;
+}
+.add:active{transform:scale(.96)}
+.bottom{
+ position:fixed;
+ bottom:10px;
+ left:12px;
+ right:12px;
+ border:1px solid #70ead555;
+ border-radius:20px;
+ padding:12px;
+ background:#063e3ceF;
+ backdrop-filter:blur(20px);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ box-shadow:0 8px 30px #0007;
+}
+.total{font-size:12px;color:#b8ddd6}
+.total strong{
+ display:block;
+ color:white;
+ font-size:15px;
+}
+.bottom button{
+ border:0;
+ border-radius:14px;
+ padding:13px 18px;
+ background:#27d7c3;
+ color:#003d38;
+ font-family:inherit;
+ font-weight:900;
+}
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#000b;
+ z-index:10;
+ padding:15px;
+ align-items:end;
+}
+.modal.show{display:flex}
+.box{
+ width:100%;
+ max-height:80vh;
+ overflow:auto;
+ background:#07423f;
+ border:1px solid #7ce8d7;
+ border-radius:23px;
+ padding:20px;
+}
+.box h2{margin-top:0}
+.item{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:12px 0;
+ border-bottom:1px solid #ffffff22;
+ gap:8px;
+}
+.item button{
+ background:#1caaa0;
+ color:white;
+ border:0;
+ border-radius:8px;
+ padding:5px 10px;
+}
+.close{
+ float:left;
+ background:transparent;
+ color:white;
+ border:0;
+ font-size:25px;
+}
+.empty{text-align:center;color:#b8ddd6}
+@media(min-width:700px){
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr));max-width:1000px;margin:auto}
+ header{padding-top:40px}
+ .card img{height:190px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">ENERGY<span>+</span></div>
+ <div class="sub">C A F E</div>
+ <div class="tagline">Good Coffee · Good Vibes · More Energy</div>
+</header>
+
+<section class="welcome">
+ <h2>به انرژی پلاس خوش آمدید ☕</h2>
+ <p>نوشیدنی مورد علاقه‌ات رو انتخاب کن و به سبد سفارش اضافه کن.</p>
+</section>
+
+<nav class="categories" id="categories"></nav>
+
+<h3 class="title" id="heading">منوی ENERGY+</h3>
+<section class="grid" id="products"></section>
+
+<div class="bottom">
+ <div class="total">
+  سبد سفارش
+  <strong id="total">۰ تومان</strong>
+  <span id="count">۰ محصول</span>
+ </div>
+ <button onclick="openCart()">مشاهده سبد خرید 🛒</button>
+</div>
+
+<div class="modal" id="modal">
+ <div class="box">
+  <button class="close" onclick="closeCart()">×</button>
+  <h2>سبد سفارش شما</h2>
+  <div id="cartItems"></div>
+  <hr>
+  <h3 id="finalTotal">۰ تومان</h3>
+  <p style="font-size:11px;color:#b8ddd6">
+   ثبت سفارش آنلاین پس از اتصال به سیستم صندوق فعال می‌شود.
+  </p>
+  <button class="add" onclick="alert('سیستم ثبت سفارش در مرحله اتصال فعال می‌شود')">
+   ثبت درخواست
+  </button>
+ </div>
+</div>
+
+<script>
+const categories=[
+"همه","بار گرم بر پایه اسپرسو","بار گرم",
+"دمنوش","چای","شیک",
+"بار سرد بر پایه اسپرسو","بار سرد",
+"آبمیوه","کیک و دسر","قهوه","سایر"
+];
+
+const products=[
+["آمریکانو","بار گرم بر پایه اسپرسو",180000,"https://images.unsplash.com/photo-1510707577719-ae7c14805e76?w=700"],
+["لاته","بار گرم بر پایه اسپرسو",255000,"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=700"],
+["موکا","بار گرم بر پایه اسپرسو",270000,"https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=700"],
+["کاپوچینو","بار گرم بر پایه اسپرسو",240000,"https://images.unsplash.com/photo-1534778101976-62847782c213?w=700"],
+["هات چاکلت","بار گرم",250000,"https://images.unsplash.com/photo-1542990253-0b8be5b4a3b5?w=700"],
+["شیر پسته","بار گرم",340000,"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=700"],
+["ماسالا","بار گرم",240000,"https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=700"],
+["دمنوش مخصوص","دمنوش",175000,"https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=700"],
+["دمنوش آویشن","دمنوش",145000,"https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=700"],
+["چای ساده","چای",120000,"https://images.unsplash.com/photo-1546250789-8b1c1c6e7f5f?w=700"],
+["چای زعفران","چای",170000,"https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=700"],
+["شیک شکلات","شیک",257000,"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=700"],
+["شیک نوتلا","شیک",278000,"https://images.unsplash.com/photo-1553787499-6f9133860278?w=700"],
+["آیس آمریکانو","بار سرد بر پایه اسپرسو",190000,"https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=700"],
+["آیس لاته","بار سرد بر پایه اسپرسو",245000,"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=700"],
+["موهیتو","بار سرد",240000,"https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=700"],
+["لیموناد","بار سرد",230000,"https://images.unsplash.com/photo-1513558161293-cdaf765edfd4?w=700"],
+["آب پرتقال","آبمیوه",220000,"https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=700"],
+["کیک شکلاتی","کیک و دسر",260000,"https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=700"],
+["کوکی","کیک و دسر",95000,"https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=700"],
+["قهوه ترک","قهوه",180000,"https://images.unsplash.com/photo-1510707577719-ae7c14805e76?w=700"],
+["شیر موز","سایر",220000,"https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=700"]
+];
+
+let selected="همه";
+let cart={};
+
+const money=n=>new Intl.NumberFormat("fa-IR").format(n)+" تومان";
+
+function renderCategories(){
+ document.getElementById("categories").innerHTML=
+ categories.map(c=>`
+ <button class="cat ${selected===c?'active':''}"
+ onclick="choose('${c}')">${c}</button>`).join("");
+}
+
+function choose(c){
+ selected=c;
+ renderCategories();
+ renderProducts();
+}
+
+function renderProducts(){
+ let list=products.map((p,i)=>({...{p},i}))
+ .filter(x=>selected==="همه"||x.p[1]===selected);
+
+ document.getElementById("heading").textContent=
+ selected==="همه"?"منوی ENERGY+":selected;
+
+ document.getElementById("products").innerHTML=list.map(x=>`
+ <article class="card">
+  <img src="${x.p[3]}" loading="lazy" alt="${x.p[0]}">
+  <div class="info">
+   <div class="name">${x.p[0]}</div>
+   <div class="desc">${x.p[1]}</div>
+   <div class="price">${money(x.p[2])}</div>
+   <button class="add" onclick="add(${x.i})">
+    ＋ افزودن به سفارش
+   </button>
+  </div>
+ </article>`).join("");
+}
+
+function add(i){
+ cart[i]=(cart[i]||0)+1;
+ updateCart();
+}
+
+function updateCart(){
+ let count=Object.values(cart).reduce((a,b)=>a+b,0);
+ let total=products.reduce((s,p,i)=>s+p[2]*(cart[i]||0),0);
+ document.getElementById("count").textContent=
+ new Intl.NumberFormat("fa-IR").format(count)+" محصول";
+ document.getElementById("total").textContent=money(total);
+ document.getElementById("finalTotal").textContent=money(total);
+
+ document.getElementById("cartItems").innerHTML=
+ Object.keys(cart).length?Object.keys(cart).map(i=>`
+ <div class="item">
+  <div>
+   <b>${products[i][0]}</b><br>
+   <small>${money(products[i][2])}</small>
+  </div>
+  <div>
+   <button onclick="change(${i},-1)">−</button>
+   ${new Intl.NumberFormat("fa-IR").format(cart[i])}
+   <button onclick="change(${i},1)">+</button>
+  </div>
+ </div>`).join(""):'<p class="empty">سبد شما خالی است.</p>';
+}
+
+function change(i,n){
+ cart[i]+=n;
+ if(cart[i]<=0)delete cart[i];
+ updateCart();
+}
+
+function openCart(){
+ document.getElementById("modal").classList.add("show");
+}
+function closeCart(){
+ document.getElementById("modal").classList.remove("show");
+}
+
+renderCategories();
+renderProducts();
+updateCart();
+</script>
+</body>
+</html>
